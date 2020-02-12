@@ -7,14 +7,14 @@
 
 // Refactoring of inline script from index.html.
 /*global SwaggerUi, log, ApiKeyAuthorization, hljs, window, $ */
-$(function() {
+$(function () {
   // Pre load translate...
   if (window.SwaggerTranslator) {
     window.SwaggerTranslator.translate();
   }
 
   var lsKey = 'swagger_accessToken';
-  $.getJSON('config.json', function(config) {
+  $.getJSON('config.json', function (config) {
     log(config);
     loadSwaggerUi(config);
   });
@@ -30,7 +30,7 @@ $(function() {
       auth: config.auth,
       dom_id: 'swagger-ui-container',
       supportHeaderParams: true,
-      onComplete: function(swaggerApi, swaggerUi) {
+      onComplete: function (swaggerApi, swaggerUi) {
         log('Loaded SwaggerUI');
         log(swaggerApi);
         log(swaggerUi);
@@ -39,7 +39,7 @@ $(function() {
           window.SwaggerTranslator.translate();
         }
 
-        $('pre code').each(function(i, e) {
+        $('pre code').each(function (i, e) {
           hljs.highlightBlock(e);
         });
 
@@ -51,14 +51,14 @@ $(function() {
           }
         }
       },
-      onFailure: function(data) {
+      onFailure: function (data) {
         log('Unable to Load SwaggerUI');
         log(data);
       },
       docExpansion: 'none',
       highlightSizeThreshold: 16384,
       apisSorter: 'alpha',
-      operationsSorter: function(a, b) {
+      operationsSorter: function (a, b) {
         var pathCompare = a.path.localeCompare(b.path);
         return pathCompare !== 0 ?
           pathCompare :
@@ -78,8 +78,8 @@ $(function() {
     e.stopPropagation(); // Don't let the default #explore handler fire
     e.preventDefault();
     var authOptions = window.swaggerUi.options.auth || {};
-    var keyLocation = authOptions.in || 'query';
-    var keyName = authOptions.name || 'access_token';
+    var keyLocation = authOptions.in || 'header';
+    var keyName = authOptions.name || 'Authorization';
     var key = $('#input_accessToken')[0].value;
     log('key: ' + key);
     if (key && key.trim() !== '') {
